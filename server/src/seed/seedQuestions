@@ -1,0 +1,89 @@
+import mongoose from "mongoose";
+import LearningQuestion from "../models/LearningQuestion.js";
+import connectDB from "../config/db.js";
+
+const questions = [
+  {
+    question: "What does JWT stand for?",
+    answer: "JSON Web Token — a compact, URL-safe token used for securely transmitting information between parties.",
+    topic: "Authentication",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What is RBAC?",
+    answer: "Role-Based Access Control — a method of restricting system access based on the roles assigned to users.",
+    topic: "Security",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What is the difference between authentication and authorization?",
+    answer: "Authentication verifies who you are. Authorization determines what you are allowed to do.",
+    topic: "Security",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What is a Mongoose middleware (hook)?",
+    answer: "Functions executed before or after a Mongoose operation like save, find, or remove. Defined with pre() or post().",
+    topic: "MongoDB",
+    difficulty: "medium",
+    isActive: true
+  },
+  {
+    question: "What is the purpose of a slug in a URL?",
+    answer: "A slug is a human-readable, URL-friendly identifier for a resource, e.g. 'iphone-14-pro-1234567890'.",
+    topic: "Web Development",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What is a cron job?",
+    answer: "A scheduled task that runs automatically at defined time intervals, e.g. every hour or daily at midnight.",
+    topic: "Backend",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What does the HTTP status code 403 mean?",
+    answer: "Forbidden — the server understood the request but refuses to authorize it. Different from 401 (unauthenticated).",
+    topic: "HTTP",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What is pagination in APIs?",
+    answer: "Breaking large datasets into smaller chunks (pages) returned one at a time, controlled by page and limit parameters.",
+    topic: "API Design",
+    difficulty: "easy",
+    isActive: true
+  },
+  {
+    question: "What is the purpose of bcrypt?",
+    answer: "bcrypt is a password hashing function that adds a salt and applies multiple rounds of hashing to protect stored passwords.",
+    topic: "Security",
+    difficulty: "medium",
+    isActive: true
+  },
+  {
+    question: "What is the difference between PUT and PATCH?",
+    answer: "PUT replaces the entire resource. PATCH applies a partial update to only the fields provided.",
+    topic: "HTTP",
+    difficulty: "medium",
+    isActive: true
+  }
+];
+
+const seedQuestions = async () => {
+  await connectDB();
+  await LearningQuestion.deleteMany({});
+  const inserted = await LearningQuestion.insertMany(questions);
+  console.log(`✅ Seeded ${inserted.length} learning questions`);
+  await mongoose.disconnect();
+};
+
+seedQuestions().catch((err) => {
+  console.error("❌ Learning questions seed failed:", err.message);
+  process.exit(1);
+});
