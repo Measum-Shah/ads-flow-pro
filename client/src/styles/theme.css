@@ -1,0 +1,49 @@
+:root {
+  /* Clean, warm professional light mode */
+  --color-bg: #fdfbfc;          /* Soft off-white with a touch of warmth */
+  --color-surface: #ffffff;     /* Pure white for cards/surfaces */
+  --color-surface-soft: #f4f3f0;/* Muted warm gray for subtle contrast */
+  --color-border: #e6e4df;      /* Soft, non-distracting borders */
+
+  --color-text: #1e2522;        /* Deep charcoal (softer than pure black) */
+  --color-muted: #6b7770;       /* Muted slate gray for secondary text */
+
+  /* Distinctive branding colors (No generic blue) */
+  --color-primary: #3d6453;     /* Elegant Deep Sage/Forest Green */
+  --color-primary-hover: #2c4a3d;
+
+  --color-accent: #b87d4b;      /* Muted Terracotta/Copper */
+
+  /* Status Colors (Professional, desaturated tones) */
+  --color-success: #387a57;     /* Soft forest success */
+  --color-warning: #c48427;     /* Amber/ochre warning */
+  --color-danger: #a84343;      /* Brick red danger */
+  --color-info: #467185;        /* Steel blue-gray info */
+
+  --shadow-soft: 0 10px 30px rgba(30, 37, 34, 0.04);
+}
+
+.dark {
+  /* Deep, sophisticated Nordic dark mode */
+  --color-bg: #121614;          /* Deep obsidian with a hint of dark slate */
+  --color-surface: #1a1f1c;     /* Elevated dark surface */
+  --color-surface-soft: #232a26;/* Lighter slate for inputs/hover states */
+  --color-border: #2d3631;      /* Subtle dark border */
+
+  --color-text: #e4e9e6;        /* Crisp, readable off-white */
+  --color-muted: #87968f;       /* Low-contrast sage-gray for secondary text */
+
+  /* Distinctive branding colors */
+  --color-primary: #52826c;     /* Refined, desaturated Sage Green */
+  --color-primary-hover: #63967f;
+
+  --color-accent: #d49765;      /* Warm, non-neon copper accent */
+
+  /* Status Colors (Optimized for dark mode contrast without glare) */
+  --color-success: #4fa879;
+  --color-warning: #db9c3b;
+  --color-danger: #c95c5c;
+  --color-info: #5d8fa8;
+
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
