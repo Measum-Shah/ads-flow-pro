@@ -321,3 +321,26 @@ export const getAnalyticsSummary = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getPublishAds = async (req, res) => {
+  try {
+    const ads = await Ad.find({
+      status: adStatus.PAYMENT_VERIFIED,
+    })
+      .populate("category", "name")
+      .populate("city", "name")
+      .populate("package", "name label price")
+      .populate("user", "fullName email")
+      .sort({ updatedAt: 1 });
+
+    res.json({
+      success: true,
+      data: ads,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

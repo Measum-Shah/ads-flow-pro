@@ -18,16 +18,21 @@ const logStatusChange = async (adId, previousStatus, newStatus, userId, note = n
 
 /**
  * GET /api/moderator/review-queue
- * Returns all ads with status = submitted, oldest first
+ * Returns all ads with status = submitted, oldest first, along with dashboard summary counts
  */
 export const getReviewQueue = async (req, res) => {
   try {
+    // 1. Fetch all ads currently in the submission review queue
     const ads = await Ad.find({ status: adStatus.SUBMITTED })
       .populate("user", "fullName email")
       .populate("category", "name slug")
       .populate("city", "name slug")
       .sort({ createdAt: 1 }) // oldest first — review in order
       .lean();
+
+    // 2. Aggregate metrics dynamically for the main dashboard statistics cards
+    const approvedCount = await Ad.countDocuments({ status: adStatus.MODERATOR_APPROVED });
+    const rejectedCount = await Ad.countDocuments({ status: adStatus.MODERATOR_REJECTED });
 
     // Attach media to each ad
     const adIds = ads.map((a) => a._id);
@@ -46,9 +51,12 @@ export const getReviewQueue = async (req, res) => {
       media: mediaMap[ad._id.toString()] || []
     }));
 
+    // Send the structured array alongside live total metric snapshots
     res.json({
       success: true,
       total: result.length,
+      approvedCount,
+      rejectedCount,
       data: result
     });
   } catch (error) {
@@ -100,8 +108,8 @@ export const getAdForReview = async (req, res) => {
  * Approve or reject a submitted ad
  *
  * Body:
- *   { action: "approve", note?: string }
- *   { action: "reject",  note: string  }  ← note required on reject
+ * { action: "approve", note?: string }
+ * { action: "reject",  note: string  }  ← note required on reject
  *
  * approve → status: moderator_approved
  * reject  → status: moderator_rejected

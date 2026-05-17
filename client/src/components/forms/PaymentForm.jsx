@@ -9,18 +9,23 @@ const PaymentForm = ({
   loading = false,
   onSubmit,
 }) => {
+  // Fixed: Mapped values to lowercase enums expected by the database 
   const paymentMethods = [
     {
       label: "JazzCash",
-      value: "JazzCash",
+      value: "jazzcash",
     },
     {
       label: "EasyPaisa",
-      value: "EasyPaisa",
+      value: "easypaisa",
     },
     {
       label: "Bank Transfer",
-      value: "Bank Transfer",
+      value: "bank_transfer",
+    },
+    {
+      label: "Other",
+      value: "other",
     },
   ];
 
@@ -43,41 +48,54 @@ const PaymentForm = ({
       }}
     >
       <div className="grid gap-5">
+        {/* Fixed: Name attribute changed from paymentMethod to method  */}
         <Select
           label="Payment Method"
-          name="paymentMethod"
-          value={formData.paymentMethod}
+          name="method" 
+          value={formData.method || ""}
           onChange={handleChange}
           options={paymentMethods}
           placeholder="Select payment method"
           required
         />
 
+        {/* Added Field: Captures the missing required senderName field  */}
         <Input
-          label="Transaction ID"
-          name="transactionId"
-          placeholder="Enter payment transaction ID"
-          value={formData.transactionId}
+          label="Sender Account Name"
+          name="senderName"
+          placeholder="Enter the name on your account"
+          value={formData.senderName || ""}
+          onChange={handleChange}
+          required
+        />
+
+        {/* Added Field: Captures the missing required amount field  */}
+        <Input
+          label="Amount Paid (PKR)"
+          name="amount"
+          type="number"
+          placeholder="Enter the transaction amount"
+          value={formData.amount || ""}
+          onChange={handleChange}
+          required
+        />
+
+        {/* Fixed: Name attribute changed from transactionId to transactionRef  */}
+        <Input
+          label="Transaction Reference Number"
+          name="transactionRef"
+          placeholder="Enter payment transaction reference (unique)"
+          value={formData.transactionRef || ""}
           onChange={handleChange}
           required
         />
 
         <Input
-          label="Screenshot URL"
+          label="Screenshot URL (Optional)"
           name="screenshotUrl"
-          placeholder="Paste screenshot image URL"
-          value={formData.screenshotUrl}
+          placeholder="Paste external screenshot image URL"
+          value={formData.screenshotUrl || ""}
           onChange={handleChange}
-          required
-        />
-
-        <Textarea
-          label="Additional Notes"
-          name="notes"
-          placeholder="Optional payment notes"
-          value={formData.notes}
-          onChange={handleChange}
-          rows={4}
         />
 
         <div

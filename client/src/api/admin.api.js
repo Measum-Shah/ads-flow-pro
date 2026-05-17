@@ -23,6 +23,10 @@ export const publishAd = async (adId, publishData) => {
   return response.data;
 };
 
+export const getPublishAds = async () => {
+  const response = await axiosInstance.get("/api/admin/publish-ads");
+  return response.data;
+};
 export const getAdminAnalyticsSummary = async () => {
   const response = await axiosInstance.get("/api/admin/analytics/summary");
   return response.data;

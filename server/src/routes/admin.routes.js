@@ -5,7 +5,8 @@ import {
   getPaymentQueue,
   verifyPayment,
   publishAd,
-  getAnalyticsSummary
+  getAnalyticsSummary,
+  getPublishAds
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -18,5 +19,5 @@ router.get("/payment-queue",          getPaymentQueue);     // GET   /api/admin/
 router.patch("/payments/:id/verify",  verifyPayment);       // PATCH /api/admin/payments/:id/verify
 router.patch("/ads/:id/publish",      publishAd);           // PATCH /api/admin/ads/:id/publish
 router.get("/analytics/summary",      getAnalyticsSummary); // GET   /api/admin/analytics/summary
-
+router.get("/publish-ads", getPublishAds);
 export default router;

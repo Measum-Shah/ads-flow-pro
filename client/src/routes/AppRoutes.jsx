@@ -32,6 +32,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import PaymentQueue from "../pages/admin/PaymentQueue";
 import VerifyPayment from "../pages/admin/VerifyPayment";
 import PublishAd from "../pages/admin/PublishAd";
+import Publishad from "../pages/admin/Publishad";
 import Analytics from "../pages/admin/Analytics";
 
 import Unauthorized from "../pages/errors/Unauthorized";
@@ -73,6 +74,7 @@ const AppRoutes = () => {
             <Route path="/admin/payment-queue" element={<PaymentQueue />} />
             <Route path="/admin/payments/:id/verify" element={<VerifyPayment />} />
             <Route path="/admin/ads/:id/publish" element={<PublishAd />} />
+            <Route path="/admin/publish-ads" element={<Publishad />} />
             <Route path="/admin/analytics" element={<Analytics />} />
           </Route>
         </Route>

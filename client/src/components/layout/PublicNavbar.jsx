@@ -26,13 +26,7 @@ const PublicNavbar = () => {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
-          <div
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold text-white"
-            style={{ backgroundColor: "var(--color-primary)" }}
-          >
-            AF
-          </div>
-
+            <img src="/logo-ad.png" className="flex h-10 w-10 items-center justify-center rounded-xl " />
           <div>
             <h1 className="text-lg font-bold leading-none">Ads Flow</h1>
             <p className="mt-1 text-xs" style={{ color: "var(--color-muted)" }}>
