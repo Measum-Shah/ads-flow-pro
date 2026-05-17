@@ -8,12 +8,18 @@ import {
   Megaphone,
   ShieldCheck,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { USER_ROLES } from "../../utils/constants";
 
 const DashboardSidebar = () => {
-  const navItems = [
+  const navigate = useNavigate();
+  const { logout, role } = useAuth();
+
+  const navGroups = [
     {
       section: "Client",
+      allowedRoles: [USER_ROLES.CLIENT],
       links: [
         { label: "Client Dashboard", path: "/client/dashboard", icon: LayoutDashboard },
         { label: "My Ads", path: "/client/ads", icon: Megaphone },
@@ -22,6 +28,7 @@ const DashboardSidebar = () => {
     },
     {
       section: "Moderator",
+      allowedRoles: [USER_ROLES.MODERATOR, USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN],
       links: [
         { label: "Moderator Dashboard", path: "/moderator/dashboard", icon: ShieldCheck },
         { label: "Review Queue", path: "/moderator/review-queue", icon: FileText },
@@ -29,6 +36,7 @@ const DashboardSidebar = () => {
     },
     {
       section: "Admin",
+      allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN],
       links: [
         { label: "Admin Dashboard", path: "/admin/dashboard", icon: BarChart3 },
         { label: "Payment Queue", path: "/admin/payment-queue", icon: CreditCard },
@@ -36,6 +44,15 @@ const DashboardSidebar = () => {
       ],
     },
   ];
+
+  const visibleGroups = navGroups.filter((group) =>
+    group.allowedRoles.includes(role)
+  );
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
@@ -79,7 +96,7 @@ const DashboardSidebar = () => {
           Public Website
         </NavLink>
 
-        {navItems.map((group) => (
+        {visibleGroups.map((group) => (
           <div key={group.section}>
             <p
               className="mb-2 px-4 text-xs font-semibold uppercase tracking-wide"
@@ -114,6 +131,7 @@ const DashboardSidebar = () => {
       </nav>
 
       <button
+        onClick={handleLogout}
         className="mt-8 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium"
         style={{
           backgroundColor: "var(--color-surface-soft)",

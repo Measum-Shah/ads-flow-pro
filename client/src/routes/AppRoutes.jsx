@@ -3,6 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import PublicLayout from "../components/layout/PublicLayout";
 import DashboardLayout from "../components/layout/DashboardLayout";
 
+import ProtectedRoute from "./ProtectedRoute";
+import RoleRoute from "./RoleRoute";
+
+import { ROUTE_ACCESS } from "../utils/rolePermissions";
+
 import Home from "../pages/public/Home";
 import BrowseAds from "../pages/public/BrowseAds";
 import AdDetails from "../pages/public/AdDetails";
@@ -45,24 +50,32 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
       </Route>
 
-      <Route element={<DashboardLayout />}>
-        <Route path="/client/dashboard" element={<ClientDashboard />} />
-        <Route path="/client/ads" element={<MyAds />} />
-        <Route path="/client/ads/create" element={<CreateAd />} />
-        <Route path="/client/ads/:id/edit" element={<EditAd />} />
-        <Route path="/client/ads/:id/package" element={<SelectPackage />} />
-        <Route path="/client/ads/:id/payment" element={<SubmitPayment />} />
-        <Route path="/client/ads/:id/history" element={<AdHistory />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route element={<RoleRoute allowedRoles={ROUTE_ACCESS.CLIENT} />}>
+            <Route path="/client/dashboard" element={<ClientDashboard />} />
+            <Route path="/client/ads" element={<MyAds />} />
+            <Route path="/client/ads/create" element={<CreateAd />} />
+            <Route path="/client/ads/:id/edit" element={<EditAd />} />
+            <Route path="/client/ads/:id/package" element={<SelectPackage />} />
+            <Route path="/client/ads/:id/payment" element={<SubmitPayment />} />
+            <Route path="/client/ads/:id/history" element={<AdHistory />} />
+          </Route>
 
-        <Route path="/moderator/dashboard" element={<ModeratorDashboard />} />
-        <Route path="/moderator/review-queue" element={<ReviewQueue />} />
-        <Route path="/moderator/ads/:id/review" element={<ReviewAd />} />
+          <Route element={<RoleRoute allowedRoles={ROUTE_ACCESS.MODERATOR} />}>
+            <Route path="/moderator/dashboard" element={<ModeratorDashboard />} />
+            <Route path="/moderator/review-queue" element={<ReviewQueue />} />
+            <Route path="/moderator/ads/:id/review" element={<ReviewAd />} />
+          </Route>
 
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/payment-queue" element={<PaymentQueue />} />
-        <Route path="/admin/payments/:id/verify" element={<VerifyPayment />} />
-        <Route path="/admin/ads/:id/publish" element={<PublishAd />} />
-        <Route path="/admin/analytics" element={<Analytics />} />
+          <Route element={<RoleRoute allowedRoles={ROUTE_ACCESS.ADMIN} />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/payment-queue" element={<PaymentQueue />} />
+            <Route path="/admin/payments/:id/verify" element={<VerifyPayment />} />
+            <Route path="/admin/ads/:id/publish" element={<PublishAd />} />
+            <Route path="/admin/analytics" element={<Analytics />} />
+          </Route>
+        </Route>
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />} />

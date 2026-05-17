@@ -3,6 +3,7 @@ import auth from "../middlewares/auth.middleware.js";
 import role from "../middlewares/role.middleware.js";
 import {
   getDashboard,
+  getAdDetails,       // <-- Imported the missing controller method
   createAd,
   editAd,
   submitAd,
@@ -17,6 +18,7 @@ const router = express.Router();
 router.use(auth, role("client"));
 
 router.get("/dashboard",              getDashboard);   // GET  /api/client/dashboard
+router.get("/ads/:id",                getAdDetails);   // GET  /api/client/ads/:id <-- ADDED ROUTE
 router.post("/ads",                   createAd);       // POST /api/client/ads
 router.patch("/ads/:id",              editAd);         // PATCH /api/client/ads/:id
 router.patch("/ads/:id/submit",       submitAd);       // PATCH /api/client/ads/:id/submit

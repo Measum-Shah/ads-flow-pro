@@ -15,4 +15,4 @@ export const getApiError = (
   }
 
   return fallbackMessage;
-};s
+};

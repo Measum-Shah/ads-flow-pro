@@ -49,6 +49,39 @@ export const getDashboard = async (req, res) => {
   }
 };
 
+// ─── Get Single Ad Details (NEWLY ADDED) ──────────────────────────────────────
+
+/**
+ * GET /api/client/ads/:id
+ * Fetches data for a single client-owned ad along with its media records
+ */
+export const getAdDetails = async (req, res) => {
+  try {
+    const ad = await Ad.findOne({ _id: req.params.id, user: req.user._id })
+      .populate("category", "name slug")
+      .populate("city", "name slug")
+      .populate("package", "name label price durationDays")
+      .lean();
+
+    if (!ad) {
+      return res.status(404).json({ success: false, message: "Ad not found" });
+    }
+
+    // Fetch all media items associated with this ad
+    const media = await AdMedia.find({ ad: ad._id }).sort({ order: 1 }).lean();
+
+    // Combine them to construct the exact data payload expected by the frontend
+    const result = {
+      ...ad,
+      media: media // This gives frontend access to adData.media[0].originalUrl
+    };
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // ─── Create Ad Draft ──────────────────────────────────────────────────────────
 
 /**

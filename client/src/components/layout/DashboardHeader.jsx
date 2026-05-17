@@ -1,7 +1,10 @@
 import { Menu, UserCircle } from "lucide-react";
 import ThemeToggle from "../common/ThemeToggle";
+import { useAuth } from "../../hooks/useAuth";
 
 const DashboardHeader = () => {
+  const { user } = useAuth();
+
   return (
     <header
       className="sticky top-0 z-30 border-b px-4 py-4 lg:px-8"
@@ -41,7 +44,17 @@ const DashboardHeader = () => {
             }}
           >
             <UserCircle size={20} style={{ color: "var(--color-muted)" }} />
-            <span className="text-sm font-medium">User</span>
+            <div>
+              <span className="block text-sm font-medium">
+                {user?.fullName || "User"}
+              </span>
+              <span
+                className="block text-xs capitalize"
+                style={{ color: "var(--color-muted)" }}
+              >
+                {user?.role || "client"}
+              </span>
+            </div>
           </div>
         </div>
       </div>

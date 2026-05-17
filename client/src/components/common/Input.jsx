@@ -1,43 +1,53 @@
-import { Inbox } from "lucide-react";
-import Button from "./Button";
+import { forwardRef, useId } from "react";
 
-const EmptyState = ({
-  title = "No data found",
-  description = "There is nothing to show right now.",
-  actionText,
-  onAction,
-}) => {
+const Input = forwardRef(({
+  label,
+  error,
+  className = "",
+  required = false,
+  id,
+  ...props
+}, ref) => {
+  // Generates a unique ID if one isn't passed via props
+  const defaultId = useId();
+  const inputId = id || defaultId;
+
   return (
-    <div
-      className="flex flex-col items-center justify-center rounded-2xl border px-6 py-14 text-center"
-      style={{
-        backgroundColor: "var(--color-surface)",
-        borderColor: "var(--color-border)",
-      }}
-    >
-      <div
-        className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl"
-        style={{ backgroundColor: "var(--color-surface-soft)" }}
-      >
-        <Inbox size={26} style={{ color: "var(--color-muted)" }} />
-      </div>
+    <div className="w-full">
+      {label && (
+        <label 
+          htmlFor={inputId} 
+          className="mb-2 block text-sm font-medium text-[var(--color-text)]"
+        >
+          {label}
+          {required && (
+            <span className="text-[var(--color-danger)]"> *</span>
+          )}
+        </label>
+      )}
 
-      <h3 className="text-lg font-semibold">{title}</h3>
+      <input
+        ref={ref}
+        id={inputId}
+        required={required}
+        aria-invalid={error ? "true" : "false"}
+        className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition placeholder:text-sm focus:ring-2 bg-[var(--color-surface)] text-[var(--color-text)] ${
+          error
+            ? "border-[var(--color-danger)] focus:ring-[var(--color-danger)]"
+            : "border-[var(--color-border)] focus:ring-[var(--color-primary)]"
+        } ${className}`}
+        {...props}
+      />
 
-      <p
-        className="mt-2 max-w-md text-sm leading-6"
-        style={{ color: "var(--color-muted)" }}
-      >
-        {description}
-      </p>
-
-      {actionText && onAction && (
-        <Button className="mt-6" onClick={onAction}>
-          {actionText}
-        </Button>
+      {error && (
+        <p className="mt-2 text-sm text-[var(--color-danger)]">
+          {error}
+        </p>
       )}
     </div>
   );
-};
+});
 
-export default EmptyState;
+Input.displayName = "Input";
+
+export default Input;
