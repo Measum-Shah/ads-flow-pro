@@ -10,14 +10,14 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists"
+        message: "User already exists",
       });
     }
 
     const user = await User.create({
       fullName,
       email,
-      password
+      password,
     });
 
     const token = generateToken(user);
@@ -29,13 +29,13 @@ export const register = async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -49,7 +49,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid credentials"
+        message: "Invalid credentials",
       });
     }
 
@@ -58,12 +58,12 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({
         success: false,
-        message: "Invalid credentials"
+        message: "Invalid credentials",
       });
     }
 
-    user.lastLoginAt = new Date();
-    await user.save();
+    // ✅ Use findByIdAndUpdate to avoid triggering the pre-save password re-hash
+    await User.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
 
     const token = generateToken(user);
 
@@ -74,14 +74,13 @@ export const login = async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
   } catch (error) {
-    
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -89,6 +88,6 @@ export const login = async (req, res) => {
 export const me = async (req, res) => {
   res.json({
     success: true,
-    user: req.user
+    user: req.user,
   });
 };

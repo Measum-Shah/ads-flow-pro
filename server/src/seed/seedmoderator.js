@@ -5,7 +5,7 @@ import User from "../models/User.js";
 const seedModerator = async () => {
   await connectDB();
 
-  const existing = await User.findOne({ email: "moderator@adflow.com" });
+  const existing = await User.findOne({ email: "moderator@aadflow.com" });
   if (existing) {
     console.log("ℹ️  Moderator already exists");
     await mongoose.disconnect();
@@ -13,8 +13,8 @@ const seedModerator = async () => {
   }
 
   await User.create({
-    fullName: "Test Moderator",
-    email: "moderator@adflow.com",
+    fullName: "Moderator",
+    email: "moderator@aadflow.com",
     password: "password123",
     role: "moderator"
   });
